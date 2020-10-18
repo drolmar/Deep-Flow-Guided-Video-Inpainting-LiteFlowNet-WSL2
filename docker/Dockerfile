@@ -37,4 +37,5 @@ urllib3==1.25.3
 
 RUN pip3 install mmcv==0.2.10
 
+RUN pip3 install cupy-cuda80
 

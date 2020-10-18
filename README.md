@@ -1,43 +1,67 @@
 # Deep Flow-Guided Video Inpainting
+
 [CVPR 2019 Paper](https://arxiv.org/abs/1905.02884) | [Project Page](https://nbei.github.io/video-inpainting.html) | [YouTube](https://www.youtube.com/watch?v=LIJPUsrwx5E) | [BibeTex](#citation)
 
 <img src="https://github.com/nbei/Deep-Flow-Guided-Video-Inpainting/blob/master/gif/captain.gif" width="860"/>
 
 ## Install & Requirements
-The code has been tested on pytorch=1.3.0 and python3.6. Please refer to `requirements.txt` for detailed information. 
 
-Alternatively, you can run it with the provided [Docker image](docker/README.md).
+The code has been tested on pytorch=1.3.0 and python3.6. Please refer to `requirements.txt` for detailed information.
+
+Alternatively, you can run it with the provided [Docker image](docker/README.md) which also can be used on Windows with WSL2.
 
 **To Install python packages**
+
 ```
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
+
 **To Install liteflownet modules**
 
-The correlation layer for LiteFlowNet is implemented in CUDA using CuPy. Install it using `pip install cupy` or install one of the provided binaries (listed [here](https://docs-cupy.chainer.org/en/stable/install.html#install-cupy)).
+The correlation layer for LiteFlowNet is implemented in CUDA using CuPy. Install it using `pip3 install cupy-cuda80` or install one of the provided binaries (listed [here](https://docs-cupy.chainer.org/en/stable/install.html#install-cupy)).
+
 ## Componets
+
 There exist three components in this repo:
+
 * Video Inpainting Tool: DFVI
 * Extract Flow: LiteFlowNet([Pytorch version](https://github.com/sniklaus/pytorch-liteflownet) reimplemented from [LiteFlowNet](https://github.com/twhui/LiteFlowNet))
 * Image Inpainting(reimplemented from [Deepfillv1](https://github.com/JiahuiYu/generative_inpainting))
 
 ## Usage
+
 * To use our video inpainting tool for object removing, we recommend that the frames should be put into `xxx/video_name/frames`
-and the mask of each frame should be put into `xxx/video_name/masks`. 
-And please download the resources of the demo and model weights from [here](https://drive.google.com/drive/folders/1a2FrHIQGExJTHXxSIibZOGMukNrypr_g?usp=sharing).
-An example demo containing frames and masks has been put into the demo and running the following command will get the result:
+  and the mask of each frame should be put into `xxx/video_name/masks`.
+  And please download the resources of the demo and model weights from [here](https://drive.google.com/drive/folders/1a2FrHIQGExJTHXxSIibZOGMukNrypr_g?usp=sharing).
+  An example demo containing frames and masks has been put into the demo and running the following command will get the result:
+
 ```
-python tools/video_inpaint.py --frame_dir ./demo/frames --MASK_ROOT ./demo/masks --img_size 512 832 --LiteFlowNet --DFC --ResNet101 --Propagation 
+python3 tools/video_inpaint.py --frame_dir ./demo/frames --MASK_ROOT ./demo/masks --img_size 512 832 --LiteFlowNet --DFC --ResNet101 --Propagation
 ```
+
 <img src="https://github.com/nbei/Deep-Flow-Guided-Video-Inpainting/blob/master/gif/flamingo.gif" width="850"/>
 
 We provide the original model weight used in our movie demo which use ResNet101 as backbone and other related weights pls download from [here](https://drive.google.com/drive/folders/1a2FrHIQGExJTHXxSIibZOGMukNrypr_g?usp=sharing). Weights for LiteFlowNet are hosted by [sniklaus](https://github.com/sniklaus): [default](http://content.sniklaus.com/github/pytorch-liteflownet/network-default.pytorch), [kitti](http://content.sniklaus.com/github/pytorch-liteflownet/network-kitti.pytorch), [sintel](http://content.sniklaus.com/github/pytorch-liteflownet/network-sintel.pytorch).
-Please refer to [tools](https://github.com/nbei/Deep-Flow-Guided-Video-Inpainting/tree/master/tools) for detailed use and training settings. 
-
-* For fixed region inpainting, we provide the model weights of refined stages in DAVIS. Please download the lady-running resources [link](https://drive.google.com/drive/folders/1GHV1g1IkpGa2qhRnZE2Fv30RXrbHPH0O?usp=sharing) and 
-model weights [link](https://drive.google.com/drive/folders/1zIamN-DzvknZLf5QAGCfvWs7a6qUqaaC?usp=sharing). The following command can help you to get the result:
+You need to rename `network-sintel.pytorch` to `sintel.pth`
 ```
-CUDA_VISIBLE_DEVICES=0 python tools/video_inpaint.py --frame_dir ./demo/lady-running/frames \
+├── demo
+│   ├── frames
+│   └── masks
+├── pretrained_models
+│   ├── FlowNet2_checkpoint.pth.tar
+│   ├── imagenet_deepfill.pth
+│   └── resnet101_movie.pth
+│   └── sintel.pth
+```
+
+Please refer to [tools](https://github.com/nbei/Deep-Flow-Guided-Video-Inpainting/tree/master/tools) for detailed use and training settings.
+
+* For fixed region inpainting, we provide the model weights of refined stages in DAVIS. Please download the lady-running resources [link](https://drive.google.com/drive/folders/1GHV1g1IkpGa2qhRnZE2Fv30RXrbHPH0O?usp=sharing) and
+  model weights [link](https://drive.google.com/drive/folders/1zIamN-DzvknZLf5QAGCfvWs7a6qUqaaC?usp=sharing). The following command can help you to get the result:
+
+
+```
+CUDA_VISIBLE_DEVICES=0 python3 tools/video_inpaint.py --frame_dir ./demo/lady-running/frames \
 --MASK_ROOT ./demo/lady-running/mask_bbox.png \
 --img_size 448 896 --DFC --LiteFlowNet --Propagation \
 --PRETRAINED_MODEL_1 ./pretrained_models/resnet50_stage1.pth \
@@ -45,35 +69,42 @@ CUDA_VISIBLE_DEVICES=0 python tools/video_inpaint.py --frame_dir ./demo/lady-run
 --PRETRAINED_MODEL_3 ./pretrained_models/DAVIS_model/davis_stage3.pth \
 --MS --th_warp 3 --FIX_MASK
 ```
+
 <img src="https://github.com/nbei/Deep-Flow-Guided-Video-Inpainting/blob/master/gif/lady-running-res.gif" width="850"/>
-You can just change the **th_warp** param for getting better results in your video. 
+You can just change the **th_warp** param for getting better results in your video.
 
 * To extract flow for videos:
+
 ```
-python tools/infer_liteflownet.py --frame_dir xxx/video_name/frames
+python3 tools/infer_liteflownet.py --frame_dir xxx/video_name/frames
 ```
 
 * To use the Deepfillv1-Pytorch model for image inpainting,
+
 ```
-python tools/frame_inpaint.py --test_img xxx.png --test_mask xxx.png --image_shape 512 512
+python3 tools/frame_inpaint.py --test_img xxx.png --test_mask xxx.png --image_shape 512 512
 ```
 
 ## Update
-* More results can be found and downloaded [here](https://www.dropbox.com/sh/jxcl4he5bgsmk7t/AADxnfqHj-PGcjxd02Bil56ya?dl=0). 
-* **Support for PyTorch>1.0:** Sorry for the late update and the pre-release verison for supporting PyTorch>1.0 has been integrated into our new [v1.1 branch](https://github.com/nbei/Deep-Flow-Guided-Video-Inpainting/tree/v1.1).
 
+* More results can be found and downloaded [here](https://www.dropbox.com/sh/jxcl4he5bgsmk7t/AADxnfqHj-PGcjxd02Bil56ya?dl=0).
+* **Support for PyTorch>1.0:** Sorry for the late update and the pre-release verison for supporting PyTorch>1.0 has been integrated into our new [v1.1 branch](https://github.com/nbei/Deep-Flow-Guided-Video-Inpainting/tree/v1.1).
 * The frames and masks of our movie demo have been put into [Google Drive](https://drive.google.com/drive/folders/1z2n1LzVY8gjvy7ezF_tuuMgVouR_pFcz?usp=sharing).
 * The weights of DAVIS's refined stages have been released and you can download from [here](https://drive.google.com/drive/folders/1zIamN-DzvknZLf5QAGCfvWs7a6qUqaaC?usp=sharing).
-Please refer to [Usage](#Usage) for using the Multi-Scale models.
+  Please refer to [Usage](#Usage) for using the Multi-Scale models.
+
 ## FAQ
+
 * Errors when running install_scripts.sh
-if you meet some problem about gcc when compiling, pls check if the following commands will help:
+  if you meet some problem about gcc when compiling, pls check if the following commands will help:
+
 ```
 export CXXFLAGS="-std=c++11"
 export CFLAGS="-std=c99"
 ```
 
 ## Citation
+
 ```
 @InProceedings{Xu_2019_CVPR,
 author = {Xu, Rui and Li, Xiaoxiao and Zhou, Bolei and Loy, Chen Change},
@@ -83,3 +114,4 @@ month = {June},
 year = {2019}
 }
 ```
+

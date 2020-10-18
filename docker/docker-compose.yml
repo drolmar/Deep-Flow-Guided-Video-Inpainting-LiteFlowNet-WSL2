@@ -2,16 +2,16 @@ version: '2.3'
 
 services:
 
-  inpainting:
-    image: inpainting
-    container_name: inpainting
-    working_dir: /inpainting
+  inpainting2:
+    image: inpainting2
+    container_name: inpainting2
+    working_dir: /inpainting2
     build:
       context: ../
       dockerfile: docker/Dockerfile
  
     volumes:
-      - ../:/inpainting
+      - ../:/inpainting2
     shm_size: '4gb'
     runtime: nvidia
     command: bash install_scripts.sh
