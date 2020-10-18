@@ -102,6 +102,10 @@ python3 tools/frame_inpaint.py --test_img xxx.png --test_mask xxx.png --image_sh
 export CXXFLAGS="-std=c++11"
 export CFLAGS="-std=c99"
 ```
+## Compatibility
+
+* Tested on Ubuntu 18.04 with a GTX 1060 GPU (drivers 410.104). Not working on higher architectures such as sm_75 (Turing), e.g. RTX 2080 Ti.
+* Tested on WSL2 of Windows 10 Pro Insider Build 20236 and Ubuntu 18.04 subsytem with GTX 1050 GPU and RTX 2080.
 
 ## Citation
 

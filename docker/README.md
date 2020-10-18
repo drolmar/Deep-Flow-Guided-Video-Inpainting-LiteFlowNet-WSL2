@@ -54,7 +54,7 @@ That will open a CLI on the Docker container. Now you can run the demo scripts, 
 
 `python3 tools/video_inpaint.py --frame_dir ./demo/frames --MASK_ROOT ./demo/masks --img_size 512 832 --FlowNet2 --DFC --ResNet101 --Propagation`
 
+## Compatibility
 
-Tested on Ubuntu 18.04 with a GTX 1060 GPU (drivers 410.104). Not working on higher architectures such as sm_75 (Turing), e.g. RTX 2080 Ti.
-
-Tested on WSL2 of Windows 10 Pro Insider Build 20236 and Ubuntu 18.04 subsytem with GTX 1050 GPU and RTX 2080.
+* Tested on Ubuntu 18.04 with a GTX 1060 GPU (drivers 410.104). Not working on higher architectures such as sm_75 (Turing), e.g. RTX 2080 Ti.
+* Tested on WSL2 of Windows 10 Pro Insider Build 20236 and Ubuntu 18.04 subsytem with GTX 1050 GPU and RTX 2080.
